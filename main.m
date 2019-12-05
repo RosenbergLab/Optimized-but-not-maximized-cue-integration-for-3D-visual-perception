@@ -1,7 +1,8 @@
 %{
-This code implements the neural network simulations presented in
-"Optimized but not maximized cue integration for 3D visual perception"
-Authors etc. hidden for double-blind peer review.
+This code implements the neural network simulations presented in the paper
+"Optimized but Not Maximized Cue Integration for 3D Visual Perception"
+by Ting-Yu Chang, Lowell Thompson, Raymond Doudlah, Byounghoon Kim, Adhira Sunkara, and Ari Rosenberg
+eNeuro, X(X): eXXXX, YEAR
 %}
 
 clear all;
@@ -14,10 +15,10 @@ tiltPrefs = deg2rad(linspace(0, 360-360/nNeurons, nNeurons)); % Tilt preference 
 tilts_deg = [0:1:359]; % Tilts with 1 deg spacing
 tilts_rad = deg2rad(tilts_deg);
 
-test_tilt_index = 181; % Index of presented stimulus tilt (Tilt = 180).
+test_tilt_index = 181; % Index of presented stimulus tilt (Tilt = 180)
 bin_size = pi/180; % 1 degree bins
 
-cFunc = @(x,xdata) x(1)*exp(-x(2)*xdata) + x(3); % Lambda scaling function which equates neuronal population gain and behavioral precision, following Ma et al. 2006
+cFunc = @(x,xdata) x(1)*exp(-x(2)*xdata) + x(3); % Lambda scaling function that equates neuronal population gain and behavioral precision
 xmulti{1} = [3.7024 2.3668 0.0013]; % Parameters for Monkey L
 xmulti{2} = [2.0303 2.4983 0.0015]; % Parameters for Monkey F
 
@@ -28,10 +29,9 @@ load('NeuralNet_Parameters.mat');
 PoissNoise = 0; % Simulation with Poisson noise (or noiseless)
 for m = 1:length(Combined_Sigmas) % For each monkey
     for s = 1:size(Combined_Sigmas{m},1) % For each slant
-        for d = 1:size(Combined_Sigmas{m},2) % For each depth
+        for d = 1:size(Combined_Sigmas{m},2) % For each distance
             
-            % Tuning curve parameters for the current slant & distance
-            % (based on neuronal recordings in area CIP) 
+            % Tuning curve parameters for the current slant & distance (based on neuronal recordings in area CIP) 
             kappaVal = tuning_curve_kappas{m}(s,d); % Kappa
             LambdaVal = cFunc(xmulti{m},kappaVal); % Lambda scaling value
             
@@ -43,8 +43,7 @@ for m = 1:length(Combined_Sigmas) % For each monkey
             % Model 3: One Population
             A_OnePop = ((AMP{m}(s,d,1).^2) + (AMP{m}(s,d,2).^2) + (AMP{m}(s,d,3).^2))./(AMP{m}(s,d,1) + AMP{m}(s,d,2) + AMP{m}(s,d,3));
             
-            % Create likelihood functions given the tuning curves - with or
-            % without Poisson noise (parameter PoissNoise)
+            % Create likelihood functions given the tuning curves - with or without Poisson noise (parameter PoissNoise)
             ThreePop_PPC_likelihood{m}(s,d,:) = generate_likelihood(LambdaVal, A_ThreePop, tiltPrefs, kappaVal, test_tilt_index, tilts_rad, PoissNoise);
             TwoPop_PPC_likelihood{m}(s,d,:) = generate_likelihood(LambdaVal, A_TwoPop, tiltPrefs, kappaVal, test_tilt_index, tilts_rad, PoissNoise);
             OnePop_PPC_likelihood{m}(s,d,:) = generate_likelihood(LambdaVal, A_OnePop, tiltPrefs, kappaVal, test_tilt_index, tilts_rad, PoissNoise);
