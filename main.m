@@ -2,7 +2,7 @@
 This code implements the neural network simulations presented in the paper
 "Optimized but Not Maximized Cue Integration for 3D Visual Perception"
 by Ting-Yu Chang, Lowell Thompson, Raymond Doudlah, Byounghoon Kim, Adhira Sunkara, and Ari Rosenberg
-eNeuro, X(X): eXXXX, YEAR
+eNeuro, 7(1): 1-18, 2020.
 %}
 
 clear all;
